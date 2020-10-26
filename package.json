@@ -1,14 +1,14 @@
 {
-  "name": "devcamper_api",
+  "name": "ugcompass",
   "version": "1.0.0",
-  "description": "Devcamper backend api",
+  "description": "UGCompass backend api",
   "main": "server.js",
   "scripts": {
     "start": "set NODE_ENV=production && node server",
     "dev": "nodemon server"
   },
-  "author": "Augustine A. Nkansah",
-  "license": "MIT",
+  "author": "Augustine Amoh Nkansah",
+  "license": "ISC",
   "dependencies": {
     "colors": "^1.4.0",
     "dotenv": "^8.2.0",
