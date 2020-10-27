@@ -11,16 +11,20 @@ dotenv.config({ path: './config/config.env' });
 connectDB();
 
 // Route files
-const bootcampRoutes = require('./routes/bootcamps');
+const facilitiesRoutes = require('./routes/facilities');
+const errorHandler = require('./middleware/error');
 
 const app = express();
 
+// Body Parser
+app.use(express.json());
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
-app.use('/api/v1/bootcamps', bootcampRoutes);
+app.use('/api/v1/facilities', facilitiesRoutes);
+app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 

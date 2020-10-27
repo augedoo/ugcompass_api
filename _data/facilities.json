@@ -1,0 +1,16 @@
+[
+  {
+    "name": "Balm Library",
+    "description": "Balm library is the best. Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium minima impedit quam, voluptatem commodi voluptas qui.",
+    "category": "study",
+    "campus": "legon",
+    "location": {
+      "coordinates": [-0.187084, 5.652028]
+    },
+    "photos": ["photo1.jpg", "photo2.jpg", "photo3.jpg"],
+    "address": "GA-490-3407",
+    "website": "https://balmlibrary.ug.edu.gh",
+    "phone": "(+233) 241-244-468",
+    "email": "balmlibrary@ug.edu.gh"
+  }
+]
