@@ -57,7 +57,7 @@ const FacilitySchema = new Schema(
       type: [String],
       required: [true, 'Please add at least one photo'],
       default: ['no-photo.jpg'],
-      validate: [validatePhotosLength, 'Can not add more than three photos'],
+      validate: [validatePhotosLength, 'Can not add more than five photos'],
     },
     email: {
       type: String,
@@ -82,15 +82,12 @@ const FacilitySchema = new Schema(
       min: [1, 'Rating must be at least 1'],
       max: [10, 'Rating must can not be more than 10'],
     },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
+  },
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
   }
-  // ,{
-  //   toJSON: { virtuals: true },
-  //   toObject: { virtuals: true },
-  // }
 );
 
 function validatePhotosLength(val) {
@@ -103,12 +100,12 @@ FacilitySchema.pre('save', function (next) {
   next();
 });
 
-// // Reverse populate with virtuals
-// FacilitySchema.virtual('rooms', {
-//   ref: 'Room',
-//   localField: '_id',
-//   foreignField: 'facility',
-//   justOne: false, // return all rooms
-// });
+// Reverse populate with virtual rooms
+FacilitySchema.virtual('rooms', {
+  ref: 'Room',
+  localField: '_id',
+  foreignField: 'facility',
+  justOne: false, // return all rooms
+});
 
 module.exports = mongoose.model('Facility', FacilitySchema);

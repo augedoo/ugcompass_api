@@ -1,5 +1,4 @@
 const express = require('express');
-const advanceResults = require('../middleware/advanceResults');
 const Facility = require('../models/Facility');
 const {
   getFacility,
@@ -8,12 +7,18 @@ const {
   updateFacility,
   deleteFacility,
 } = require('../controllers/facilities');
+const roomRouter = require('../routes/rooms');
 
 const router = express.Router();
 
+// Re-route into other routes
+router.use('/:facilityId/rooms', roomRouter);
+
+const advancedResults = require('../middleware/advancedResults');
+
 router
   .route('/')
-  .get(advanceResults(Facility), getFacilities)
+  .get(advancedResults(Facility), getFacilities)
   .post(addFacility);
 
 router
