@@ -7,8 +7,8 @@ const dotenv = require('dotenv');
 dotenv.config({ path: './config/config.env' });
 
 // Load models
-const Bootcamp = require('./models/Bootcamp');
-const Course = require('./models/Course');
+const Facility = require('./models/Facility');
+const Room = require('./models/Room');
 const User = require('./models/User');
 const Review = require('./models/Review');
 
@@ -21,11 +21,11 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 // Read JSON files
-const bootcamps = JSON.parse(
-  fs.readFileSync(`${__dirname}/_data/bootcamps.json`, 'utf-8')
+const facilities = JSON.parse(
+  fs.readFileSync(`${__dirname}/_data/facilities.json`, 'utf-8')
 );
-const courses = JSON.parse(
-  fs.readFileSync(`${__dirname}/_data/courses.json`, 'utf-8')
+const rooms = JSON.parse(
+  fs.readFileSync(`${__dirname}/_data/rooms.json`, 'utf-8')
 );
 const users = JSON.parse(
   fs.readFileSync(`${__dirname}/_data/users.json`, 'utf-8')
@@ -37,8 +37,8 @@ const reviews = JSON.parse(
 // Import into DB
 const importData = async () => {
   try {
-    await Bootcamp.create(bootcamps);
-    await Course.create(courses);
+    await Facility.create(facilities);
+    await Room.create(rooms);
     await User.create(users);
     await Review.create(reviews);
     console.log('Data Imported...'.green.inverse);
@@ -51,8 +51,8 @@ const importData = async () => {
 // Delete data from DB
 const deleteData = async () => {
   try {
-    await Bootcamp.deleteMany();
-    await Course.deleteMany();
+    await Facility.deleteMany();
+    await Room.deleteMany();
     await User.deleteMany();
     await Review.deleteMany();
     console.log('Data Destroyed...'.red.inverse);

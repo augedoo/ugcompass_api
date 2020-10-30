@@ -7,12 +7,14 @@ const {
   updateFacility,
   deleteFacility,
 } = require('../controllers/facilities');
-const roomRouter = require('../routes/rooms');
+const roomsRouter = require('../routes/rooms');
+const reviewsRouter = require('../routes/reviews');
 
 const router = express.Router();
 
 // Re-route into other routes
-router.use('/:facilityId/rooms', roomRouter);
+router.use('/:facilityId/rooms', roomsRouter);
+router.use('/:facilityId/reviews', reviewsRouter);
 
 const advancedResults = require('../middleware/advancedResults');
 

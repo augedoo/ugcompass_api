@@ -1,16 +1,15 @@
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
 const Review = require('../models/Review');
-const Bootcamp = require('../models/Bootcamp');
+const Facility = require('../models/Facility');
 
 // @desc      Get all reviews
 // @route     GET /api/v1/reviews
-// @route     GET /api/v1/bootcamps/:bootcampId/reviews
+// @route     GET /api/v1/facilities/:facilityId/reviews
 // @access    Public
 exports.getReviews = asyncHandler(async (req, res, next) => {
-  if (req.params.bootcampId) {
-    // ! If we getting reviews for a specific bootcamp, advanced queries is not necessary so we return a seperate response
-    const reviews = await Review.find({ bootcamp: req.params.bootcampId });
+  if (req.params.facilityId) {
+    const reviews = await Review.find({ facility: req.params.facilityId });
 
     return res.status(200).json({
       success: true,
@@ -28,7 +27,7 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.getReview = asyncHandler(async (req, res, next) => {
   const review = await Review.findById(req.params.id).populate({
-    path: 'bootcamp',
+    path: 'facility',
     select: 'name description',
   });
 
@@ -45,18 +44,18 @@ exports.getReview = asyncHandler(async (req, res, next) => {
 });
 
 // @desc      Add review
-// @route     GET /api/v1/bootcamp/:bootcampId/reviews
+// @route     GET /api/v1/facilities/:facilityId/reviews
 // @access    Private
 exports.addReview = asyncHandler(async (req, res, next) => {
-  req.body.bootcamp = req.params.bootcampId;
+  req.body.facility = req.params.facilityId;
   req.body.user = req.user.id;
 
-  const bootcamp = await Bootcamp.findById(req.params.bootcampId);
+  const facility = await Facility.findById(req.params.facilityId);
 
-  if (!bootcamp) {
+  if (!facility) {
     return next(
       new ErrorResponse(
-        `No bootcamp with the id of ${req.params.bootcampId}`,
+        `No facility with the id of ${req.params.facilityId}`,
         404
       )
     );

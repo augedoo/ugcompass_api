@@ -10,7 +10,6 @@ const User = require('../models/User');
 exports.register = asyncHandler(async (req, res, next) => {
   const { name, email, password, role } = req.body;
 
-  // ! The is no validation here because it is all done through the model
   // Create user
   const user = await User.create({
     name,
@@ -28,14 +27,13 @@ exports.register = asyncHandler(async (req, res, next) => {
 exports.login = asyncHandler(async (req, res, next) => {
   const { email, password } = req.body;
 
-  // ! We gotta validate here because this will not run through the models validation
   // Validate email and password
   if (!email || !password) {
     return next(new ErrorResponse('Please provide an email and password', 400));
   }
 
   // Check for user
-  const user = await User.findOne({ email }).select('+password'); // ! Gotta do "+password" bcos in model we don't return passwords as part of user results
+  const user = await User.findOne({ email }).select('+password');
 
   if (!user) {
     return next(new ErrorResponse('Invalid credentials', 401));
@@ -60,6 +58,8 @@ exports.logout = asyncHandler(async (req, res, next) => {
     httpOnly: true,
   });
 
+  // ! Clear localStorage on the client
+
   res.status(200).json({
     success: true,
     data: {},
@@ -81,9 +81,7 @@ exports.getMe = asyncHandler(async (req, res, next) => {
 // @desc      Update user details
 // @route     PUT /api/v1/auth/updatedetails
 // @access    Private
-// ! I could put this route in the users controller but i want that to only be for admin CRUD on users
 exports.updateDetails = asyncHandler(async (req, res, next) => {
-  // I want to only update name and email fields here
   const fieldsToUpdate = {
     name: req.body.name,
     email: req.body.email,
@@ -103,7 +101,6 @@ exports.updateDetails = asyncHandler(async (req, res, next) => {
 // @desc      Update logged in user password
 // @route     PUT /api/v1/auth/updatepassword
 // @access    Private
-// ! I could put this route in the users controller but i want that to only be for admin CRUD on users
 exports.updatePassword = asyncHandler(async (req, res, next) => {
   const user = await User.findById(req.user.id).select('+password');
 
@@ -183,14 +180,12 @@ exports.resetPassword = asyncHandler(async (req, res, next) => {
   user.password = req.body.password;
   user.resetPasswordToken = undefined;
   user.resetPasswordExpire = undefined;
-  console.log(user);
   await user.save();
 
   sendTokenResponse(user, 200, res);
 });
 
 // Get token from model, create cookie and send response
-//  ! Instead of sending only the token, we want to also send a cookie with the token in it so that on the client side we can have the option to use cookie or localStorage to access our token. We are doing this because using cookie is more secured than using localStorage.
 const sendTokenResponse = (user, statusCode, res) => {
   // > Create token
   const token = user.getSignedJwtToken();

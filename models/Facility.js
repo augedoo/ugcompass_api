@@ -73,6 +73,13 @@ const FacilitySchema = new Schema(
         'Please use a valid URL with HTTP or HTTPS',
       ],
     },
+    /**
+     * Figure out how to properly store working hours in the format of:
+     *
+     *  */
+    hours: {
+      obj: { type: Number },
+    },
     phone: {
       type: String,
       maxlength: [20, 'Phone number can not be longer than 20 characters'],
@@ -81,6 +88,11 @@ const FacilitySchema = new Schema(
       type: Number,
       min: [1, 'Rating must be at least 1'],
       max: [10, 'Rating must can not be more than 10'],
+    },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
+      require: true,
     },
   },
   {

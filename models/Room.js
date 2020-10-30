@@ -9,7 +9,7 @@ const RoomSchema = new Schema(
       type: String,
       required: [true, 'Please add a name'],
       maxlength: [50, 'Name can not be more than 50 characters'],
-      unique: true,
+      unique: [true, 'A room with this already exists.'],
       trim: true,
     },
     slug: String,
@@ -47,6 +47,11 @@ const RoomSchema = new Schema(
     facility: {
       type: mongoose.Types.ObjectId,
       ref: 'Facility',
+      require: true,
+    },
+    user: {
+      type: mongoose.Schema.ObjectId,
+      ref: 'User',
       require: true,
     },
   },

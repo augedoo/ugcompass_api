@@ -47,6 +47,7 @@ exports.getRoom = asyncHandler(async (req, res, next) => {
 exports.addRoom = asyncHandler(async (req, res, next) => {
   // Add facility field to body
   req.body.facility = req.params.facilityId;
+  req.body.user = req.user.id;
 
   // Check if facility exists
   const facility = await Facility.findById(req.params.facilityId);
@@ -59,7 +60,14 @@ exports.addRoom = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // Todo: Make sure user role is publisher or admin
+  if (req.user.role !== 'publisher' && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to add room to facility ${facility._id}`,
+        401
+      )
+    );
+  }
 
   // Add room
   const room = await Room.create(req.body);
@@ -85,6 +93,7 @@ exports.updateRoom = asyncHandler(async (req, res, next) => {
 
   room = await Room.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
+    runValidators: true,
   });
 
   res.status(200).json({ success: true, data: room });
@@ -102,7 +111,17 @@ exports.deleteRoom = asyncHandler(async (req, res, next) => {
     );
   }
 
-  room = await Room.findByIdAndDelete(req.params.id);
+  // Make sure user is publisher or admin
+  if (req.user.role !== 'publisher' && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to delete course ${room._id}`,
+        401
+      )
+    );
+  }
+
+  await room.remove();
 
   res.status(200).json({ success: true, data: {} });
 });

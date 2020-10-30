@@ -1,8 +1,18 @@
+const path = require('path');
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
+const fileUpload = require('express-fileupload');
+const cookieParser = require('cookie-parser');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const rateLimit = require('express-rate-limit');
+const hpp = require('hpp');
+const cors = require('cors');
 const connectDB = require('./config/db');
+const errorHandler = require('./middleware/error');
 
 // Load env vars
 dotenv.config({ path: './config/config.env' });
@@ -13,19 +23,46 @@ connectDB();
 // Route files
 const facilitiesRoutes = require('./routes/facilities');
 const roomsRoutes = require('./routes/rooms');
-const errorHandler = require('./middleware/error');
+const authRoutes = require('./routes/auth');
+const usersRoutes = require('./routes/users');
+const reviewsRoutes = require('./routes/reviews');
 
 const app = express();
 
-// Body Parser
+// Body parser
 app.use(express.json());
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+// Cookie parser
+app.use(cookieParser());
+// File uploading
+app.use(fileUpload());
+// Sanitizing user inputs:
+app.use(mongoSanitize());
+// Set security headers
+app.use(helmet());
+// Prevent XSS attacks
+app.use(xss());
+// Prevent hpp
+app.use(hpp());
+// Rate Limiting
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // > 15 minutes
+  max: 100, // > limit each IP to 100 requests per windowMs
+});
+app.use(limiter);
+// Enable CORS
+app.use(cors());
+// Set static folder
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/v1/facilities', facilitiesRoutes);
 app.use('/api/v1/rooms', roomsRoutes);
+app.use('/api/v1/auth', authRoutes);
+app.use('/api/v1/users', usersRoutes);
+app.use('/api/v1/reviews', reviewsRoutes);
 app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
