@@ -7,7 +7,17 @@
     "location": {
       "coordinates": [-0.187084, 5.652028]
     },
-    "photos": ["photo1.jpg", "photo2.jpg", "photo3.jpg"],
+    "photos": [
+      "photo1.jpg",
+      "photo2.jpg",
+      "photo3.jpg",
+      "photo4.jpg",
+      "photo5.jpg"
+    ],
+    "hours": {
+      "mon": { "open": 570, "close": 1080 },
+      "fri": { "open": 570, "close": 1050 }
+    },
     "address": "GA-490-3407",
     "website": "https://balmlibrary.ug.edu.gh",
     "phone": "(+233) 241-244-468",

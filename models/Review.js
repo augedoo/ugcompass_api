@@ -21,12 +21,12 @@ const ReviewSchema = new mongoose.Schema(
     facility: {
       type: mongoose.Schema.ObjectId,
       ref: 'Facility',
-      require: true,
+      required: true,
     },
     user: {
       type: mongoose.Schema.ObjectId,
       ref: 'User',
-      require: true,
+      required: true,
     },
   },
   {
@@ -41,7 +41,7 @@ ReviewSchema.index({ facility: 1, user: 1 }, { unique: true });
 ReviewSchema.statics.getAverageRating = async function (facilityId) {
   const obj = await this.aggregate([
     {
-      $match: { facilty: facilityId },
+      $match: { facility: facilityId },
     },
     {
       $group: {
@@ -67,9 +67,8 @@ ReviewSchema.post('save', function () {
 });
 
 // Call averageRating before remove
-ReviewSchema.pre('save', function (next) {
+ReviewSchema.pre('remove', function () {
   this.constructor.getAverageRating(this.facility);
-  next();
 });
 
 module.exports = mongoose.model('Review', ReviewSchema);
