@@ -18,6 +18,17 @@ exports.register = asyncHandler(async (req, res, next) => {
     role,
   });
 
+  if (!user) {
+    return next(new ErrorResponse('User could not be created'));
+  }
+
+  const message = `<h1>Welcome to ShowMeWhere</h1>`;
+  await sendEmail({
+    email: user.email,
+    subject: 'Welcome Friend',
+    message,
+  });
+
   sendTokenResponse(user, 200, res);
 });
 
@@ -135,12 +146,14 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
     'host'
   )}/api/v1/auth/resetpassword/${resetToken}`;
 
-  const message = `You are receiving this email because you (or someone else) has requested the reset of a password. Please make a PUT request to:\n\n ${resetUrl}`;
+  const message = `
+    <p>You are receiving this email because you <span style="color: red;">(or someone else)</span> has requested the reset of a password. Please click on this <a href="${resetUrl}">link</a> link to reset your password.</p>
+  `;
 
   try {
     await sendEmail({
       email: user.email,
-      subject: 'Password reset token',
+      subject: 'Password Reset',
       message,
     });
 
