@@ -22,9 +22,11 @@ const RoomSchema = new Schema(
     address: String,
     photos: {
       type: [String],
-      required: [true, 'Please add at least one photo'],
-      default: ['no-photo.jpg'],
-      validate: [validatePhotosLength, 'Can not add more than three photos'],
+      default: [],
+      validate: [
+        validatePhotosLength,
+        `Room can not have more than ${process.env.MAX_ROOM_PHOTOS_UPLOAD} photos`,
+      ],
     },
     email: {
       type: String,
@@ -60,7 +62,7 @@ const RoomSchema = new Schema(
 
 // validation number of photos to upload validation
 function validatePhotosLength(val) {
-  return val.length <= 3;
+  return val.length <= process.env.MAX_ROOM_PHOTOS_UPLOAD;
 }
 
 // Create place slug from the name

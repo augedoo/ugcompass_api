@@ -1,5 +1,7 @@
+const path = require('path');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
+const fileHelper = require('../utils/file');
 const Room = require('../models/Room');
 const Facility = require('../models/Facility');
 
@@ -124,4 +126,116 @@ exports.deleteRoom = asyncHandler(async (req, res, next) => {
   await room.remove();
 
   res.status(200).json({ success: true, data: {} });
+});
+
+// @desc      Upload photos for room
+// @route     PUT /api/v1/facilities/:id/photos
+// @access    Private
+exports.roomPhotosUpload = asyncHandler(async (req, res, next) => {
+  let room = await Room.findById(req.params.id);
+  if (!room) {
+    return next(
+      new ErrorResponse(`Resource not found with id of ${req.params.id}`, 404)
+    );
+  }
+
+  // Make sure a file is uploaded
+  if (req.files === null || req.files.length === 0) {
+    return next(new ErrorResponse(`Please upload a file`, 400));
+  }
+
+  // Check number of file uploaded
+  if (room.photos.length >= process.env.MAX_ROOM_PHOTOS_UPLOAD) {
+    return next(
+      new ErrorResponse(
+        `Room can not have more than ${process.env.MAX_ROOM_PHOTOS_UPLOAD} photos`,
+        400
+      )
+    );
+  }
+
+  // Build filesArray
+  let filesArray;
+  if (req.files.images.name) {
+    filesArray = [req.files.images];
+  } else {
+    filesArray = [...req.files.images];
+  }
+
+  filesArray.forEach(async (file) => {
+    // Check file type
+    if (!file.mimetype.startsWith('image')) {
+      return next(new ErrorResponse(`Please upload only image file`, 400));
+    }
+
+    // // Check file size
+    // if (file.size > process.env.MAX_FILE_UPLOAD) {
+    //   return next(
+    //     new ErrorResponse(
+    //       `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}bytes`,
+    //       400
+    //     )
+    //   );
+    // }
+
+    // Create custom filename
+    file.name = `room_${room._id}_${file.name}`;
+
+    // Make sure file is not already uploaded
+    if (room.photos.includes(file.name)) {
+      return next(
+        new ErrorResponse(
+          `Duplicate file name. Try uploading file with a different name`,
+          400
+        )
+      );
+    }
+
+    room.photos.push(file.name);
+
+    // Move file to specific directory on the server
+    file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
+      if (err) {
+        console.error(err);
+        return next(new ErrorResponse(`Problem with file upload`, 500));
+      }
+    });
+  });
+
+  room = await room.save({ runValidators: true });
+
+  res.status(200).json({
+    success: true,
+    data: room,
+  });
+});
+
+// @desc      Delete room's photo
+// @route     PUT /api/v1/rooms/:id/photos/:photoname
+// @access    Private
+exports.deleteRoomPhoto = asyncHandler(async (req, res, next) => {
+  let room = await Room.findById(req.params.id);
+  if (!room) {
+    return next(
+      new ErrorResponse(`Resource not found with id of ${req.params.id}`, 404)
+    );
+  }
+
+  room.photos.forEach((photoname, index) => {
+    if (photoname === req.params.photoname) {
+      room.photos.splice(index, 1);
+      // > delete image from server
+      fileHelper.delete(
+        path.join(__dirname, '..', 'public', 'uploads', req.params.photoname)
+      );
+    }
+  });
+
+  room = await room.save({ runValidators: true });
+
+  res.status(200).json({
+    success: true,
+    data: room,
+    msg: 'File deleted successfully',
+  });
 });
