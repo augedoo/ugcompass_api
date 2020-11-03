@@ -20,7 +20,7 @@ const errorHandler = require('./middleware/error');
 dotenv.config({ path: './config/config.env' });
 
 // Connect to database
-connectDB();
+// connectDB();
 
 // Route files
 const facilitiesRoutes = require('./routes/facilities');
@@ -49,7 +49,17 @@ app.use(fileUpload());
 // Sanitizing user inputs:
 app.use(mongoSanitize());
 // Set security headers
-app.use(helmet());
+app.use(
+  helmet(),
+  helmet.contentSecurityPolicy({
+    directives: {
+      'default-src': ["'self'"],
+      'script-src': ["'self'", "'unsafe-inline'"],
+      'style-src': ["'self'", "'unsafe-inline'"],
+    },
+  })
+);
+
 // Prevent XSS attacks
 app.use(xss());
 // Prevent hpp
@@ -73,6 +83,10 @@ app.use((req, res, next) => {
     'GET, POST, PUT, PATCH, DELETE'
   );
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.set(
+    'Content-Security-Policy',
+    "script-src 'unsafe-inline'; style-src 'unsafe-inline';"
+  );
   next();
 });
 
