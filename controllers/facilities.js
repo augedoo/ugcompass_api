@@ -47,6 +47,16 @@ exports.updateFacility = asyncHandler(async (req, res, next) => {
     );
   }
 
+  // Make sure user created facility
+  if (req.user.id !== facility.user.toString() && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to update facility ${facility._id}`,
+        401
+      )
+    );
+  }
+
   facility = await Facility.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
   });
@@ -66,6 +76,16 @@ exports.deleteFacility = asyncHandler(async (req, res, next) => {
     );
   }
 
+  // Make sure user created facility
+  if (req.user.id !== facility.user.toString() && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to delete facility ${facility._id}`,
+        401
+      )
+    );
+  }
+
   facility = await Facility.findByIdAndDelete(req.params.id);
 
   res.status(200).json({ success: true, data: {} });
@@ -79,6 +99,16 @@ exports.facilityPhotosUpload = asyncHandler(async (req, res, next) => {
   if (!facility) {
     return next(
       new ErrorResponse(`Resource not found with id of ${req.params.id}`, 404)
+    );
+  }
+
+  // Make sure user created facility
+  if (req.user.id !== facility.user.toString() && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to upload photo for ${facility._id}`,
+        401
+      )
     );
   }
 
@@ -105,21 +135,34 @@ exports.facilityPhotosUpload = asyncHandler(async (req, res, next) => {
     filesArray = [...req.files.images];
   }
 
+  // Add upload + uploaded to avoid over upload
+  if (
+    facility.photos.length + filesArray.length >
+    process.env.MAX_FACILITY_PHOTOS_UPLOAD
+  ) {
+    return next(
+      new ErrorResponse(
+        `Too many file uploads. Maximum upload for a facility is ${process.env.MAX_FACILITY_PHOTOS_UPLOAD} photos`,
+        400
+      )
+    );
+  }
+
   filesArray.forEach(async (file) => {
     // Check file type
     if (!file.mimetype.startsWith('image')) {
       return next(new ErrorResponse(`Please upload only image file`, 400));
     }
 
-    // // Check file size
-    // if (file.size > process.env.MAX_FILE_UPLOAD) {
-    //   return next(
-    //     new ErrorResponse(
-    //       `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}bytes`,
-    //       400
-    //     )
-    //   );
-    // }
+    // Check file size
+    if (file.size > process.env.MAX_FILE_UPLOAD * 1024 * 1024) {
+      return next(
+        new ErrorResponse(
+          `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}megabytes`,
+          400
+        )
+      );
+    }
 
     // Create custom filename
     file.name = `facility_${facility._id}_${file.name}`;

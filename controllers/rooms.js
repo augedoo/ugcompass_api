@@ -62,7 +62,8 @@ exports.addRoom = asyncHandler(async (req, res, next) => {
     );
   }
 
-  if (req.user.role !== 'publisher' && req.user.role !== 'admin') {
+  // Make sure user created facility
+  if (req.user.id !== facility.user.toString() && req.user.role !== 'admin') {
     return next(
       new ErrorResponse(
         `User ${req.user.id} is not authorized to add room to facility ${facility._id}`,
@@ -93,6 +94,16 @@ exports.updateRoom = asyncHandler(async (req, res, next) => {
     );
   }
 
+  // Make sure user created room
+  if (req.user.id !== room.user.toString() && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to update room ${room._id}`,
+        401
+      )
+    );
+  }
+
   room = await Room.findByIdAndUpdate(req.params.id, req.body, {
     new: true,
     runValidators: true,
@@ -113,11 +124,11 @@ exports.deleteRoom = asyncHandler(async (req, res, next) => {
     );
   }
 
-  // Make sure user is publisher or admin
-  if (req.user.role !== 'publisher' && req.user.role !== 'admin') {
+  // Make sure user created room
+  if (req.user.id !== room.user.toString() && req.user.role !== 'admin') {
     return next(
       new ErrorResponse(
-        `User ${req.user.id} is not authorized to delete course ${room._id}`,
+        `User ${req.user.id} is not authorized to delete room ${room._id}`,
         401
       )
     );
@@ -136,6 +147,16 @@ exports.roomPhotosUpload = asyncHandler(async (req, res, next) => {
   if (!room) {
     return next(
       new ErrorResponse(`Resource not found with id of ${req.params.id}`, 404)
+    );
+  }
+
+  // Make sure user created room
+  if (req.user.id !== room.user.toString() && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to upload photos for room ${room._id}`,
+        401
+      )
     );
   }
 
@@ -162,21 +183,34 @@ exports.roomPhotosUpload = asyncHandler(async (req, res, next) => {
     filesArray = [...req.files.images];
   }
 
+  // Add upload + uploaded to avoid over upload
+  if (
+    room.photos.length + filesArray.length >
+    process.env.MAX_ROOM_PHOTOS_UPLOAD
+  ) {
+    return next(
+      new ErrorResponse(
+        `Too many file uploads. Maximum upload for a room is ${process.env.MAX_ROOM_PHOTOS_UPLOAD} photos`,
+        400
+      )
+    );
+  }
+
   filesArray.forEach(async (file) => {
     // Check file type
     if (!file.mimetype.startsWith('image')) {
       return next(new ErrorResponse(`Please upload only image file`, 400));
     }
 
-    // // Check file size
-    // if (file.size > process.env.MAX_FILE_UPLOAD) {
-    //   return next(
-    //     new ErrorResponse(
-    //       `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}bytes`,
-    //       400
-    //     )
-    //   );
-    // }
+    // Check file size
+    if (file.size > process.env.MAX_FILE_UPLOAD * 1024 * 1024) {
+      return next(
+        new ErrorResponse(
+          `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}megabytes`,
+          400
+        )
+      );
+    }
 
     // Create custom filename
     file.name = `room_${room._id}_${file.name}`;
@@ -218,6 +252,16 @@ exports.deleteRoomPhoto = asyncHandler(async (req, res, next) => {
   if (!room) {
     return next(
       new ErrorResponse(`Resource not found with id of ${req.params.id}`, 404)
+    );
+  }
+
+  // Make sure user created room
+  if (req.user.id !== room.user.toString() && req.user.role !== 'admin') {
+    return next(
+      new ErrorResponse(
+        `User ${req.user.id} is not authorized to delete photos for room ${room._id}`,
+        401
+      )
     );
   }
 
