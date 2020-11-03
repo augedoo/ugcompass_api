@@ -12,6 +12,7 @@ const xss = require('xss-clean');
 const rateLimit = require('express-rate-limit');
 const hpp = require('hpp');
 const cors = require('cors');
+const compression = require('compression');
 const connectDB = require('./config/db');
 const errorHandler = require('./middleware/error');
 
@@ -54,6 +55,7 @@ app.use(xss());
 // Prevent hpp
 app.use(hpp());
 // Rate Limiting
+app.use(compression());
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // > 15 minutes
   max: 100, // > limit each IP to 100 requests per windowMs
