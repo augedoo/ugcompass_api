@@ -55,8 +55,7 @@ const FacilitySchema = new Schema(
     },
     photos: {
       type: [String],
-      required: [true, 'Please add at least one photo'],
-      default: ['no-photo.jpg'],
+      default: [],
       validate: [validatePhotosLength, 'Can not add more than five photos'],
     },
     email: {
@@ -85,6 +84,7 @@ const FacilitySchema = new Schema(
       fri: { open: { type: Number }, close: { type: Number } },
       sat: { open: { type: Number }, close: { type: Number } },
       sun: { open: { type: Number }, close: { type: Number } },
+      weekdays: { open: { type: Number }, close: { type: Number } },
     },
     phone: {
       type: String,

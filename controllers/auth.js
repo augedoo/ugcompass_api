@@ -1,3 +1,4 @@
+const path = require('path');
 const crypto = require('crypto');
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/async');
@@ -22,11 +23,70 @@ exports.register = asyncHandler(async (req, res, next) => {
     return next(new ErrorResponse('User could not be created'));
   }
 
-  const message = `<h1>Welcome to ShowMeWhere</h1>`;
+  const message = `
+    <div style="color: #2A2A2A; padding: 0 1rem; font-size: 1rem; text-align: center;">
+
+      <p style="font-weight: 900; font-size: 2.5rem; color: #003A6A;">UGCompass</p>
+
+      <p style="border-bottom: 7px solid #003A6A;">
+        <img src="cid:universityofghana@nodemailer.com" style="width: 100%"/>
+      </p>
+      <h4>Hi ${user.name},</h4>
+      <p>We’re thrilled to see you here!</p>
+
+      <p>
+        We’re confident that, UGCompass will help you utilize campus facilities effectively.
+      </p>
+
+      <p>
+        For any help, you can contact us on: <br><br> +233-241-244-468 <br><br> Our team is always behind your dail to ensure you get the very best out of our service.
+      </p>
+      
+      Thank you and we are excited to have you.
+
+      <p style="padding: 1rem 0;">
+        <strong><span style="color: #F97F21;">I-PROJECT</span> <sub>LEG</sub></strong>
+      </p>
+
+      <p style="padding: 1rem 0;">
+        Find more about us.
+
+        <br><br>
+
+        <a href="https://www.iprojectleg.com/" style="display: inline-block; padding: 0.75rem 1.5rem; font-weight: bold; color: #fff; background: #003A6A; border-radius: 5px;">
+          Visit I-Project Leg
+        </a>
+      </p>
+
+      
+
+      <p style="margin-top: 2rem;">
+        <img src="cid:iproject-advert-1@nodemailer.com" style="width: 100%"/>
+      </p>
+    </div>
+    `;
   await sendEmail({
     email: user.email,
-    subject: 'Welcome Friend',
+    subject: 'Welcome Aboard on UGCompass',
     message,
+    attachments: [
+      {
+        filename: 'ug.jpg',
+        path: `${path.join(__dirname, '..', 'public', 'img', 'ug.jpg')}`,
+        cid: 'universityofghana@nodemailer.com', //same cid value as in the html img src
+      },
+      {
+        filename: 'iproject-advert-1.jpg',
+        path: `${path.join(
+          __dirname,
+          '..',
+          'public',
+          'img',
+          'iproject-advert-1.jpg'
+        )}`,
+        cid: 'iproject-advert-1@nodemailer.com',
+      },
+    ],
   });
 
   sendTokenResponse(user, 200, res);

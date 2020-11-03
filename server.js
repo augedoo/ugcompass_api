@@ -1,4 +1,5 @@
 const path = require('path');
+const fs = require('fs');
 const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
@@ -29,11 +30,16 @@ const reviewsRoutes = require('./routes/reviews');
 
 const app = express();
 
+const accessLogStream = fs.createWriteStream(
+  path.join(__dirname, 'access.log'),
+  { flags: 'a' }
+);
+
 // Body parser
 app.use(express.json());
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan('dev'));
+  app.use(morgan('combined', { stream: accessLogStream }));
 }
 // Cookie parser
 app.use(cookieParser());

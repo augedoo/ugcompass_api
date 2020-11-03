@@ -30,6 +30,8 @@ exports.getFacility = asyncHandler(async (req, res, next) => {
 // @route     POST /api/v1/facilities
 // @access    Private
 exports.addFacility = asyncHandler(async (req, res, next) => {
+  req.body.user = req.user.id;
+
   const facility = await Facility.create(req.body);
 
   res.status(200).json({ success: true, data: facility });
@@ -47,6 +49,7 @@ exports.updateFacility = asyncHandler(async (req, res, next) => {
     );
   }
 
+  console.log(facility);
   // Make sure user created facility
   if (req.user.id !== facility.user.toString() && req.user.role !== 'admin') {
     return next(

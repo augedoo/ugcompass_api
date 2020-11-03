@@ -24,13 +24,13 @@ const { protect, authorize } = require('../middleware/is-auth');
 router
   .route('/')
   .get(advancedResults(Facility), getFacilities)
-  .post(addFacility);
+  .post(protect, authorize('admin', 'publisher'), addFacility);
 
 router
   .route('/:id')
   .get(getFacility)
-  .put(updateFacility)
-  .delete(deleteFacility);
+  .put(protect, authorize('admin', 'publisher'), updateFacility)
+  .delete(protect, authorize('admin', 'publisher'), deleteFacility);
 
 router
   .route('/:id/photos')
