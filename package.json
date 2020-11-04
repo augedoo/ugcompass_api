@@ -7,6 +7,9 @@
     "start": "set NODE_ENV=production && node server",
     "dev": "nodemon server"
   },
+  "engines": {
+    "node": "14.6.0"
+  },
   "author": "Augustine Amoh Nkansah",
   "license": "ISC",
   "dependencies": {

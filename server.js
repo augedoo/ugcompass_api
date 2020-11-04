@@ -20,7 +20,7 @@ const errorHandler = require('./middleware/error');
 dotenv.config({ path: './config/config.env' });
 
 // Connect to database
-// connectDB();
+connectDB();
 
 // Route files
 const facilitiesRoutes = require('./routes/facilities');
