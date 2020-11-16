@@ -183,7 +183,7 @@ exports.roomPhotosUpload = asyncHandler(async (req, res, next) => {
     filesArray = [...req.files.images];
   }
 
-  // Add upload + uploaded to avoid over upload
+  // Add upload + uploaded to prevent uploading more than MAX_FACILITY_PHOTOS_UPLOAD
   if (
     room.photos.length + filesArray.length >
     process.env.MAX_ROOM_PHOTOS_UPLOAD
@@ -216,7 +216,7 @@ exports.roomPhotosUpload = asyncHandler(async (req, res, next) => {
     file.name = `room_${room._id}_${file.name}`;
 
     // Make sure file is not already uploaded
-    if (room.photos.includes(file.name)) {
+    if (room.photos.includes('images/' + file.name)) {
       return next(
         new ErrorResponse(
           `Duplicate file name. Try uploading file with a different name`,
@@ -225,7 +225,7 @@ exports.roomPhotosUpload = asyncHandler(async (req, res, next) => {
       );
     }
 
-    room.photos.push(file.name);
+    room.photos.push('images/' + file.name);
 
     // Move file to specific directory on the server
     file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
@@ -265,12 +265,18 @@ exports.deleteRoomPhoto = asyncHandler(async (req, res, next) => {
     );
   }
 
+  // Make sure file exists
+  if (!room.photos.includes('images/' + req.params.photoname)) {
+    return next(new ErrorResponse(`Photo does not exist`, 400));
+  }
+
+  // Delete photo
   room.photos.forEach((photoname, index) => {
-    if (photoname === req.params.photoname) {
+    if (photoname.split('/')[1] === req.params.photoname) {
       room.photos.splice(index, 1);
       // > delete image from server
       fileHelper.delete(
-        path.join(__dirname, '..', 'public', 'uploads', req.params.photoname)
+        path.join(__dirname, '..', 'images', req.params.photoname)
       );
     }
   });

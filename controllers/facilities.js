@@ -138,7 +138,7 @@ exports.facilityPhotosUpload = asyncHandler(async (req, res, next) => {
     filesArray = [...req.files.images];
   }
 
-  // Add upload + uploaded to avoid over upload
+  // Add upload + uploaded to prevent uploading more than MAX_FACILITY_PHOTOS_UPLOAD
   if (
     facility.photos.length + filesArray.length >
     process.env.MAX_FACILITY_PHOTOS_UPLOAD
@@ -171,7 +171,7 @@ exports.facilityPhotosUpload = asyncHandler(async (req, res, next) => {
     file.name = `facility_${facility._id}_${file.name}`;
 
     // Make sure file is not already uploaded
-    if (facility.photos.includes(file.name)) {
+    if (facility.photos.includes('images/' + file.name)) {
       return next(
         new ErrorResponse(
           `Duplicate file name. Try uploading with a different file name`,
@@ -180,7 +180,7 @@ exports.facilityPhotosUpload = asyncHandler(async (req, res, next) => {
       );
     }
 
-    facility.photos.push(file.name);
+    facility.photos.push('images/' + file.name);
 
     // Move file to specific directory on the server
     file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
@@ -210,12 +210,18 @@ exports.deleteFacilityPhoto = asyncHandler(async (req, res, next) => {
     );
   }
 
+  // Make sure file exists
+  if (!facility.photos.includes('images/' + req.params.photoname)) {
+    return next(new ErrorResponse(`Photo does not exist`, 400));
+  }
+
+  // Delete photo
   facility.photos.forEach((photoname, index) => {
-    if (photoname === req.params.photoname) {
+    if (photoname.split('/')[1] === req.params.photoname) {
       facility.photos.splice(index, 1);
       // > delete image from server
       fileHelper.delete(
-        path.join(__dirname, '..', 'public', 'uploads', req.params.photoname)
+        path.join(__dirname, '..', 'images', req.params.photoname)
       );
     }
   });
