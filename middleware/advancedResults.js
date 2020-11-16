@@ -6,7 +6,7 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   // > Copy req.query
   const reqQuery = { ...req.query };
   // > Fields to exclude
-  const removeFields = ['select', 'sort', 'page', 'limit'];
+  const removeFields = ['select', 'order_by', 'page', 'per_page'];
   // > Loop over remove fields and delete from reqQeury
   removeFields.forEach((param) => delete reqQuery[param]);
   // > Create query string
@@ -27,21 +27,21 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   }
 
   // > Sort
-  if (req.query.sort) {
-    const sortBy = req.query.sort.split(',').join(' ');
-    query = query.sort(sortBy);
+  if (req.query.order_by) {
+    const orderBy = req.query.order_by.split(',').join(' ');
+    query = query.sort(orderBy);
   } else {
     query = query.sort('-createdAt');
   }
 
   // > Pagination
   const page = parseInt(req.query.page, 10) || 1;
-  const limit = parseInt(req.query.limit, 10) || 25;
-  const startIndex = (page - 1) * limit;
-  const endIndex = page * limit;
+  const per_page = parseInt(req.query.per_page, 10) || 15;
+  const startIndex = (page - 1) * per_page;
+  const endIndex = page * per_page;
   const total = await model.countDocuments();
 
-  query = query.skip(startIndex).limit(limit);
+  query = query.skip(startIndex).limit(per_page);
 
   if (populate) {
     query = query.populate(populate);
@@ -56,14 +56,14 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   if (endIndex < total) {
     pagination.next = {
       page: page + 1,
-      limit,
+      per_page,
     };
   }
 
   if (startIndex > 0) {
     pagination.prev = {
       page: page - 1,
-      limit,
+      per_page,
     };
   }
 

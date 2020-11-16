@@ -44,7 +44,7 @@ const FacilitySchema = new Schema(
       enum: [
         'classroom',
         'general use',
-        'labouratory',
+        'laboratory',
         'office',
         'residential',
         'special use',
@@ -76,16 +76,37 @@ const FacilitySchema = new Schema(
      * Figure out how to properly store working hours in the format of:
      *
      *  */
-    hours: {
-      mon: { open: { type: Number }, close: { type: Number } },
-      tue: { open: { type: Number }, close: { type: Number } },
-      wed: { open: { type: Number }, close: { type: Number } },
-      thu: { open: { type: Number }, close: { type: Number } },
-      fri: { open: { type: Number }, close: { type: Number } },
-      sat: { open: { type: Number }, close: { type: Number } },
-      sun: { open: { type: Number }, close: { type: Number } },
-      weekdays: { open: { type: Number }, close: { type: Number } },
-    },
+    hours: [
+      {
+        _id: false,
+        day: {
+          type: String,
+          required: true,
+          enum: [
+            'monday',
+            'tuesday',
+            'wednesday',
+            'thursday',
+            'friday',
+            'saturday',
+            'sunday',
+            'weekdays',
+          ],
+        },
+        open: {
+          type: Number,
+          required: true,
+          max: [1440, 'Time range cannot excess 24hours'],
+        },
+        close: {
+          type: Number,
+          required: true,
+          max: [1440, 'Time range cannot excess 24hours'],
+        },
+      },
+      // mon: { open: { type: Number }, close: { type: Number } },
+      // weekdays: { open: { type: Number }, close: { type: Number } },
+    ],
     phone: {
       type: String,
       maxlength: [20, 'Phone number can not be longer than 20 characters'],
