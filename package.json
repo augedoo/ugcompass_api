@@ -11,7 +11,7 @@
     "node": "14.6.0"
   },
   "author": "Augustine Amoh Nkansah",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "colors": "^1.4.0",
