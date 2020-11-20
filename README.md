@@ -1,4 +1,4 @@
-# DevCamper API
+# UGCompass API
 
 > Backend API for UGCompass application (mobile and web), which is a location directory website application to serve people on University of Ghana campus.
 
@@ -41,3 +41,8 @@ Extensive documentation of the API is live at [ugcompass.herokuapp.com](https://
 - Version: 1.0.0
 - License: MIT
 - Author: Augustine Amoh Nkansah
+
+## Credits
+
+Credits to Brad Traversy for his enormous contribution to my knowledge in buiding this api successfully. Am most thankful as
+most of the ideas and code i used to build this robust api is from his Node.js course. Am most greatful.
