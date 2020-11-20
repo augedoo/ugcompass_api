@@ -72,10 +72,6 @@ const FacilitySchema = new Schema(
         'Please use a valid URL with HTTP or HTTPS',
       ],
     },
-    /**
-     * Figure out how to properly store working hours in the format of:
-     *
-     *  */
     hours: [
       {
         _id: false,
