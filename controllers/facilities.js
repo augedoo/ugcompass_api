@@ -161,7 +161,7 @@ exports.facilityPhotosUpload = asyncHandler(async (req, res, next) => {
     if (file.size > process.env.MAX_FILE_UPLOAD * 1024 * 1024) {
       return next(
         new ErrorResponse(
-          `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}megabytes`,
+          `Please upload an image less than ${process.env.MAX_FILE_UPLOAD}megabyte(s)`,
           400
         )
       );
@@ -180,8 +180,6 @@ exports.facilityPhotosUpload = asyncHandler(async (req, res, next) => {
       );
     }
 
-    facility.photos.push('images/' + file.name);
-
     // Move file to specific directory on the server
     file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
       if (err) {
@@ -189,6 +187,8 @@ exports.facilityPhotosUpload = asyncHandler(async (req, res, next) => {
         return next(new ErrorResponse(`Problem with file upload`, 500));
       }
     });
+
+    facility.photos.push('images/' + file.name);
   });
 
   facility = await facility.save({ runValidators: true });
