@@ -1,26 +1,146 @@
 [
   {
-    "name": "Balm Library",
-    "description": "Balm library is the best. Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium minima impedit quam, voluptatem commodi voluptas qui.",
+    "location": {
+        "type": "Point",
+        "coordinates": [
+            -0.18765,
+            5.6501396
+        ]
+    },
+    "photos": [],
+    "_id": "5fbcf32fb4f99800174bd1b7",
+    "name": "Village Canteen",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium minima impedit quam.",
+    "category": "general use",
+    "campus": "legon",
+    "user": "5fa48836e5beda0017572608",
+    "hours": [],
+    "createdAt": "2020-11-24T11:49:03.033Z",
+    "updatedAt": "2020-11-24T11:49:03.033Z",
+    "slug": "village-canteen",
+    "id": "5fbcf32fb4f99800174bd1b7"
+  },
+  {
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        -0.1865273,
+        5.6414388
+      ]
+    },
+    "photos": [],
+    "_id": "5fbcf0f3b4f99800174bd1b6",
+    "name": "Volta Hall",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium minima impedit quam.",
+    "category": "residential",
+    "campus": "legon",
+    "user": "5fa48836e5beda0017572608",
+    "hours": [],
+    "slug": "volta-hall",
+    "id": "5fbcf0f3b4f99800174bd1b6"
+  },
+  { 
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        -0.187084,
+        5.6521288
+      ]
+    },
+    "photos": [],
+    "_id": "5fbcef84b4f99800174bd1b4",
+    "name": "GCB Lecture Building",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium minima impedit quam.",
     "category": "study",
     "campus": "legon",
+    "hours": [
+      {
+        "day": "weekdays",
+        "open": 510,
+        "close": 1320
+      }
+    ],
+    "address": "GA-490-3407",
+    "user": "5fa48836e5beda0017572608",
+    "createdAt": "2020-11-24T11:33:24.735Z",
+    "updatedAt": "2020-11-24T11:33:24.735Z",
+    "slug": "gcb-lecture-building", 
+    "id": "5fbcef84b4f99800174bd1b4"
+  },
+  {
     "location": {
-      "coordinates": [-0.187084, 5.652028]
+      "type": "Point",
+      "coordinates": [
+        -0.187084,
+        5.652028
+      ]
+    },
+    "photos": [],
+    "_id": "5fb569eb347a190017a19b9a",
+    "name": "IT Smart Class",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium minima impedit quam.",
+    "category": "study",
+    "campus": "city",
+    "hours": [
+      {
+        "day": "weekdays",
+        "open": 510,
+        "close": 1320
+      },
+      {
+        "day": "saturday",
+        "open": 480,
+        "close": 1440
+      },
+      {
+        "day": "sunday",
+        "open": 480,
+        "close": 1440
+      }
+    ],
+    "user": "5fa48836e5beda0017572608",
+    "createdAt": "2020-11-18T18:37:31.396Z",
+    "updatedAt": "2020-11-18T18:37:31.396Z",
+    "slug": "it-smart-class",
+    "id": "5fb569eb347a190017a19b9a"
+  },
+  {
+    "location": {
+      "type": "Point",
+      "coordinates": [
+        -0.187084,
+        5.652028
+      ]
     },
     "photos": [
-      "photo1.jpg",
-      "photo2.jpg",
-      "photo3.jpg",
-      "photo4.jpg",
-      "photo5.jpg"
+      "images/facility_5fb2b0cb99ca733040c250b1_Newton.jpg",
+      "images/facility_5fb2b0cb99ca733040c250b1_56-512.png"
     ],
-    "hours": {
-      "mon": { "open": 570, "close": 1080 },
-      "fri": { "open": 570, "close": 1050 }
-    },
+    "_id": "5fb2b0cb99ca733040c250b1",
+    "name": "Balm Library",
+    "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Accusantium minima impedit quam.",
+    "category": "study",
+    "campus": "legon",
+    "hours": [
+      {
+        "day": "weekdays",
+        "open": 510,
+        "close": 1320
+      },
+      {
+        "day": "saturday",
+        "open": 480,
+        "close": 1440
+      }
+    ],
     "address": "GA-490-3407",
     "website": "https://balmlibrary.ug.edu.gh",
-    "phone": "(+233) 241-244-468",
-    "email": "balmlibrary@ug.edu.gh"
+    "phone": "(+233) 302 512 407",
+    "email": "balmlibrary@ug.edu.gh",
+    "user": "5fa48836e5beda0017572608",
+    "createdAt": "2020-11-16T17:03:07.069Z",
+    "updatedAt": "2020-11-24T09:47:02.628Z",
+    "slug": "balm-library",
+    "id": "5fb2b0cb99ca733040c250b1"
   }
 ]

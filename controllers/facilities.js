@@ -187,9 +187,11 @@ exports.facilityPhotosUpload = asyncHandler(async (req, res, next) => {
         return next(new ErrorResponse(`Problem with file upload`, 500));
       }
     });
-
+    
+    // Upload image url
     facility.photos.push('images/' + file.name);
   });
+
 
   facility = await facility.save({ runValidators: true });
 

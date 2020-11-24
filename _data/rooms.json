@@ -1,18 +1,34 @@
 [
   {
-    "photos": ["photo1.jpg", "photo2.jpg"],
-    "name": "Knowledge Commons",
+    "photos": [],
+    "_id": "5fbae46dc0311300171a031c",
+    "name": "New Room for IT Smart Class",
     "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    "phone": "(+233) 111-224-444",
-    "email": "knowledgecommons@ug.edu.gh",
-    "website": "https://knowledgecommons@ug.edu.gh"
+    "address": "GA-490-3407",
+    "email": "neroom@balme.edu.gh",
+    "website": "https://newroom.ug.edu.gh",
+    "phone": "(+233) 302 512 407",
+    "facility":  "5fb569eb347a190017a19b9a",
+    "user": "5fa48836e5beda0017572608",
+    "createdAt": "2020-11-22T22:21:33.447Z",
+    "updatedAt": "2020-11-22T22:21:33.447Z",
+    "slug": "new-room-for-it-smart-class",
+    "__v": 0
   },
   {
-    "photos": ["photo1.jpg", "photo2.jpg", "photo3.jpg"],
-    "name": "24 Hours Study",
+    "photos": [],
+    "_id": "5fb2b1db26d74229543e4602",
+    "name": "Knowledge Commons",
     "description": "Lorem ipsum dolor sit amet consectetur adipisicing elit.",
-    "phone": "(+233) 111-224-444",
-    "email": "balmlibrary24hrs@ug.edu.gh",
-    "website": "https://balmlibrary24hrs@ug.edu.gh"
+    "address": "GA-490-3407",
+    "email": "knowledgecommons@balme.edu.gh",
+    "website": "https://knowledgecommons.ug.edu.gh",
+    "phone": "(+233) 302 512 407",
+    "facility":"5fb2b0cb99ca733040c250b1",
+    "user": "5fa48836e5beda0017572608",
+    "createdAt": "2020-11-16T17:07:39.890Z",
+    "updatedAt": "2020-11-16T17:27:26.753Z",
+    "slug": "knowledge-commons",
+    "__v": 6
   }
 ]
