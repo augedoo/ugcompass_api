@@ -20,6 +20,21 @@ const RoomSchema = new Schema(
       trim: true,
     },
     address: String,
+    category: {
+      type: String,
+      required: [true, 'Please add a category'],
+      enum: [
+        'classroom',
+        'general use',
+        'laboratory',
+        'office',
+        'residential',
+        'special use',
+        'study',
+        'support',
+        'other',
+      ],
+    },
     photos: {
       type: [String],
       default: [],
