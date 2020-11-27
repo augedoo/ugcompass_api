@@ -44,7 +44,8 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   query = query.skip(startIndex).limit(per_page);
 
   if (populate) {
-    query = query.populate(populate);
+    const fieldsToPopulate = populate.split(' ') //split fields to populate into array
+    query = query.populate(fieldsToPopulate);
   }
 
   // > Execute query

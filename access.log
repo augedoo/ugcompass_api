@@ -101,3 +101,6 @@
 ::1 - - [24/Nov/2020:09:42:55 +0000] "PUT /api/v1/facilities/5fb2b0cb99ca733040c250b1/photos HTTP/1.1" 200 748 "-" "PostmanRuntime/7.26.8"
 ::1 - - [24/Nov/2020:09:44:22 +0000] "PUT /api/v1/facilities/5fb2b0cb99ca733040c250b1/photos/facility_5fb2b0cb99ca733040c250b1_Newton.jpg HTTP/1.1" 200 729 "-" "PostmanRuntime/7.26.8"
 ::ffff:192.168.43.180 - - [24/Nov/2020:14:46:27 +0000] "GET / HTTP/1.1" 200 - "-" "avast! Antivirus"
+::1 - - [27/Nov/2020:22:56:51 +0000] "GET /api/v1/facilities HTTP/1.1" 200 - "-" "PostmanRuntime/7.26.8"
+::1 - - [27/Nov/2020:22:57:36 +0000] "GET /api/v1/facilities HTTP/1.1" 200 - "-" "PostmanRuntime/7.26.8"
+::1 - - [27/Nov/2020:22:58:10 +0000] "GET /api/v1/facilities HTTP/1.1" 200 - "-" "PostmanRuntime/7.26.8"

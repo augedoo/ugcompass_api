@@ -149,7 +149,24 @@ FacilitySchema.virtual('reviews', {
   ref: 'Review',
   localField: '_id',
   foreignField: 'facility',
-  justOne: false, // return all rooms
+  justOne: false, // return all reviews
+});
+
+// Reverse populate with virtual numberOfRooms
+FacilitySchema.virtual('numberOfRooms', {
+  ref: 'Room',
+  localField: '_id',
+  foreignField: 'facility',
+  count: true // only get the number of docs
+});
+
+
+// Reverse populate with virtual numberOfReviews
+FacilitySchema.virtual('numberOfReviews', {
+  ref: 'Review',
+  localField: '_id',
+  foreignField: 'facility',
+  count: true
 });
 
 
