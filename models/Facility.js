@@ -143,4 +143,14 @@ FacilitySchema.virtual('rooms', {
   justOne: false, // return all rooms
 });
 
+
+// Reverse populate with virtual reviews
+FacilitySchema.virtual('reviews', {
+  ref: 'Review',
+  localField: '_id',
+  foreignField: 'facility',
+  justOne: false, // return all rooms
+});
+
+
 module.exports = mongoose.model('Facility', FacilitySchema);

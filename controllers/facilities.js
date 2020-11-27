@@ -15,7 +15,7 @@ exports.getFacilities = asyncHandler((req, res, next) => {
 // @route     GET /api/v1/facilities/:id
 // @access    Public
 exports.getFacility = asyncHandler(async (req, res, next) => {
-  const facility = await Facility.findById(req.params.id).populate('rooms');
+  const facility = await Facility.findById(req.params.id).populate('rooms').populate('reviews');
 
   if (!facility) {
     return next(
