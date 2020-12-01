@@ -90,18 +90,14 @@ const FacilitySchema = new Schema(
           ],
         },
         open: {
-          type: Number,
+          type: String,
           required: true,
-          max: [1440, 'Time range cannot excess 24hours'],
         },
         close: {
-          type: Number,
+          type: String,
           required: true,
-          max: [1440, 'Time range cannot excess 24hours'],
         },
       },
-      // mon: { open: { type: Number }, close: { type: Number } },
-      // weekdays: { open: { type: Number }, close: { type: Number } },
     ],
     phone: {
       type: String,
