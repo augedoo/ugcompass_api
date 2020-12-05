@@ -9,7 +9,12 @@ const Facility = require('../models/Facility');
 // @access    Public
 exports.getReviews = asyncHandler(async (req, res, next) => {
   if (req.params.facilityId) {
-    const reviews = await Review.find({ facility: req.params.facilityId });
+    const reviews = await Review.find({
+      facility: req.params.facilityId,
+    }).populate({
+      path: 'user',
+      select: 'name',
+    });
 
     return res.status(200).json({
       success: true,
@@ -27,7 +32,7 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
 // @access    Public
 exports.getReview = asyncHandler(async (req, res, next) => {
   const review = await Review.findById(req.params.id).populate({
-    path: 'facility',
+    path: 'facility user',
     select: 'name description',
   });
 

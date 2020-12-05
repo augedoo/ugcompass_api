@@ -17,13 +17,7 @@ const router = express.Router({ mergeParams: true });
 
 router
   .route('/')
-  .get(
-    advancedResults(Room, {
-      path: 'facility',
-      select: 'name description',
-    }),
-    getRooms
-  )
+  .get(advancedResults(Room, 'user'), getRooms)
   .post(protect, authorize('admin', 'publisher'), addRoom);
 
 router

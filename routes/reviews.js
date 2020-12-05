@@ -16,13 +16,7 @@ const { protect, authorize } = require('../middleware/is-auth');
 
 router
   .route('/')
-  .get(
-    advancedResults(Review, {
-      path: 'facility',
-      select: 'name description',
-    }),
-    getReviews
-  )
+  .get(advancedResults(Review, 'facility user'), getReviews)
   .post(protect, authorize('admin', 'user'), addReview);
 
 router

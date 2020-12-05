@@ -1,12 +1,10 @@
 const advancedResults = (model, populate) => async (req, res, next) => {
   let query;
 
-  console.log(req.query);
-
   // > Copy req.query
   const reqQuery = { ...req.query };
   // > Fields to exclude
-  const removeFields = ['select', 'order_by', 'page', 'per_page'];
+  const removeFields = ['select', 'order_by', 'page', 'per_page', 'search'];
   // > Loop over remove fields and delete from reqQeury
   removeFields.forEach((param) => delete reqQuery[param]);
   // > Create query string
@@ -18,7 +16,17 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   );
 
   // > Finding resource
-  query = model.find(JSON.parse(queryStr));
+  if (req.query.search) {
+    query = model.find({
+      $or: [
+        { name: { $regex: req.query.search, $options: '$i' } },
+        { title: { $regex: req.query.search, $options: '$i' } },
+        { text: { $regex: req.query.search, $options: '$i' } },
+      ],
+    });
+  } else {
+    query = model.find(JSON.parse(queryStr));
+  }
 
   // > Select fields
   if (req.query.select) {
@@ -44,12 +52,13 @@ const advancedResults = (model, populate) => async (req, res, next) => {
   query = query.skip(startIndex).limit(per_page);
 
   if (populate) {
-    const fieldsToPopulate = populate.split(' ') //split fields to populate into array
+    const fieldsToPopulate = populate.split(' '); //split fields to populate into array
     query = query.populate(fieldsToPopulate);
   }
 
   // > Execute query
-  const results = await  query;
+  const results = await query;
+  console.log(results);
 
   // > Pagination result
   const pagination = {};
