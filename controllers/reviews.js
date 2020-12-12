@@ -11,10 +11,12 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
   if (req.params.facilityId) {
     const reviews = await Review.find({
       facility: req.params.facilityId,
-    }).populate({
-      path: 'user',
-      select: 'name',
-    });
+    })
+      .populate({
+        path: 'user',
+        select: 'name',
+      })
+      .sort('-createdAt');
 
     return res.status(200).json({
       success: true,
@@ -31,12 +33,10 @@ exports.getReviews = asyncHandler(async (req, res, next) => {
 // @route     GET /api/v1/reviews/id
 // @access    Public
 exports.getReview = asyncHandler(async (req, res, next) => {
-  const review = await Review.findById(req.params.id)
-    .populate({
-      path: 'facility user',
-      select: 'name description',
-    })
-    .sort('-createdAt');
+  const review = await Review.findById(req.params.id).populate({
+    path: 'facility user',
+    select: 'name description',
+  });
 
   if (!review) {
     return next(

@@ -230,7 +230,6 @@ exports.roomPhotosUpload = asyncHandler(async (req, res, next) => {
     // Move file to specific directory on the server
     file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
       if (err) {
-        console.error(err);
         return next(new ErrorResponse(`Problem with file upload`, 500));
       }
     });

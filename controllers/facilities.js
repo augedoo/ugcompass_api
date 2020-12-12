@@ -15,7 +15,9 @@ exports.getFacilities = asyncHandler((req, res, next) => {
 // @route     GET /api/v1/facilities/:id
 // @access    Public
 exports.getFacility = asyncHandler(async (req, res, next) => {
-  const facility = await Facility.findById(req.params.id).populate('rooms').populate('reviews');
+  const facility = await Facility.findById(req.params.id)
+    .populate('rooms')
+    .populate('reviews');
 
   if (!facility) {
     return next(
@@ -49,7 +51,6 @@ exports.updateFacility = asyncHandler(async (req, res, next) => {
     );
   }
 
-  console.log(facility);
   // Make sure user created facility
   if (req.user.id !== facility.user.toString() && req.user.role !== 'admin') {
     return next(
@@ -183,15 +184,13 @@ exports.facilityPhotosUpload = asyncHandler(async (req, res, next) => {
     // Move file to specific directory on the server
     file.mv(`${process.env.FILE_UPLOAD_PATH}/${file.name}`, async (err) => {
       if (err) {
-        console.error(err);
         return next(new ErrorResponse(`Problem with file upload`, 500));
       }
     });
-    
+
     // Upload image url
     facility.photos.push('images/' + file.name);
   });
-
 
   facility = await facility.save({ runValidators: true });
 
