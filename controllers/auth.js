@@ -202,10 +202,7 @@ exports.forgotPassword = asyncHandler(async (req, res, next) => {
   await user.save({ validateBeforeSave: false });
 
   // Create reset url
-  // const resetUrl = `${req.protocol}://${req.get(
-  //   'host'
-  // )}/api/v1/auth/resetpassword/${resetToken}`;
-  const resetUrl = `http://localhost:3000/changepassword/${resetToken}`;
+  const resetUrl = `https://ugcompass.netlify.app/changepassword/${resetToken}`;
 
   const message = `
     <p>You are receiving this email because you <span style="color: red;">(or someone else)</span> has requested the reset of a password. Please click on this <a href="${resetUrl}">link</a> link to reset your password.</p>
