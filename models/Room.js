@@ -25,11 +25,11 @@ const RoomSchema = new Schema(
       required: [true, 'Please add a category'],
       enum: [
         'classroom',
-        'general use',
+        'general_use',
         'laboratory',
         'office',
         'residential',
-        'special use',
+        'special_use',
         'study',
         'support',
         'other',
