@@ -31,6 +31,7 @@ const RoomSchema = new Schema(
         'residential',
         'special_use',
         'study',
+        'leased',
         'support',
         'other',
       ],
