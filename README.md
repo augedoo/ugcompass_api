@@ -5,7 +5,7 @@
 Related to this project:
 - Web Client Code - [ugcompass.herokuapp.com](https://github.com/augedoo/ugcompass.com)
 - Web Admin Code - [ugcompass.herokuapp.com](https://github.com/augedoo/ugcompass-admin)
-- Application Prototype - [Figma Prototype](https://www.figma.com/proto/SNhFwF42WQ6b7WDLdMhqUz/UGCompass?page-id=103%3A2294&node-id=108%3A5921)
+- Application Prototype - [Figma Prototype](https://www.figma.com/proto/SNhFwF42WQ6b7WDLdMhqUz/UGCompass?page-id=103%3A2294&node-id=108%3A5921&show-proto-sidebar=1)
 
 ## Usage
 
