@@ -1,6 +1,9 @@
 # UGCompass API
 
 > Backend API for UGCompass application (mobile and web), which is a location directory website application to serve people on University of Ghana campus.
+> Web Client Code - [ugcompass.herokuapp.com](https://github.com/augedoo/ugcompass.com)
+> Web Admin Code - [ugcompass.herokuapp.com](https://github.com/augedoo/ugcompass-admin)
+> Application Prototype - [Figma Prototype](https://www.figma.com/proto/SNhFwF42WQ6b7WDLdMhqUz/UGCompass?page-id=103%3A2294&node-id=108%3A5921)
 
 ## Usage
 
